@@ -18,6 +18,8 @@ def get_diff(repo_path: str, commit1: str, commit2: str) -> dict:
     
     result = []
     for d in diffs:
+        if d.b_path and d.b_path.endswith('.pyc'):
+            continue
         result.append({
             "file": d.b_path,
             "change_type": d.change_type,  # A=added, D=deleted, M=modified, R=renamed

@@ -24,15 +24,30 @@ def extract_node(state: DiffState) -> DiffState:
     result = get_diff(state["repo_path"], state["commit1"], state["commit2"])
     state["diffs"] = result["diffs"]
     return state
+from backend.tools.vector_store import store_explanation, get_cached_explanation
 
 def explain_node(state: DiffState) -> DiffState:
     explanations = []
     for d in state["diffs"]:
-        explanation = explain_diff(d["patch"], d["file"])
-        explanations.append({
-            "file": d["file"],
-            "explanation": explanation
-        })
+        cached = get_cached_explanation(
+            state["commit1"], state["commit2"], d["file"]
+        )
+        if cached:
+            print(f"[CACHE HIT] {d['file']}")
+            explanations.append({
+                "file": d["file"],
+                "explanation": cached
+            })
+        else:
+            print(f"[GEMINI CALL] {d['file']}")
+            explanation = explain_diff(d["patch"], d["file"])
+            store_explanation(
+                state["commit1"], state["commit2"], d["file"], explanation
+            )
+            explanations.append({
+                "file": d["file"],
+                "explanation": explanation
+            })
     state["explanations"] = explanations
     return state
 

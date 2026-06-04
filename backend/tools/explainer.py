@@ -1,17 +1,15 @@
 import os
 from google import genai
 from dotenv import load_dotenv
+
 load_dotenv()
 
-client=genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
-def explain_diff(patch : str,filename:str)->str:
-    '''
-    takes a patch string for one file and asks gemini 
-    to explain what behavioral change it represents
-    '''
+client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
+
+def explain_diff(patch: str, filename: str) -> str:
     prompt = f"""
-you are a senior software engineer reviewing a code diff.
-File changed : {filename}
+You are a senior software engineer reviewing a code diff.
+File changed: {filename}
 
 Diff:
 {patch}

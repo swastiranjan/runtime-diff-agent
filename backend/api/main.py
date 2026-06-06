@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from dotenv import load_dotenv
 
@@ -7,8 +8,15 @@ load_dotenv()
 from backend.agents.diff_agent import build_agent
 
 app = FastAPI()
-agent = build_agent()
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+agent = build_agent()
 class AnalyzeRequest(BaseModel):
     repo_path: str
     commit1: str

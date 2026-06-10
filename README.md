@@ -70,21 +70,24 @@ Open `http://localhost:5173` in your browser.
 4. Get plain-English explanations of what behaviorally changed per file, plus an overall summary
 
 ## Project Structure
+
+```
 runtime-diff-agent/
 ├── backend/
 │   ├── agents/
-│   │   └── diff_agent.py      # LangGraph agent
+│   │   └── diff_agent.py
 │   ├── tools/
-│   │   ├── git_extractor.py   # Git diff extraction
-│   │   ├── explainer.py       # Gemini explanation
-│   │   └── vector_store.py    # ChromaDB caching
+│   │   ├── git_extractor.py
+│   │   ├── explainer.py
+│   │   └── vector_store.py
 │   └── api/
-│       └── main.py            # FastAPI server
+│       └── main.py
 ├── frontend/
 │   └── src/
-│       └── App.jsx            # React UI
+│       └── App.jsx
 ├── docker/
 │   ├── Dockerfile.backend
 │   └── Dockerfile.frontend
 ├── docker-compose.yml
 └── requirements.txt
+```

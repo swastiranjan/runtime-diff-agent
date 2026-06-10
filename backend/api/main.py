@@ -1,7 +1,8 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from dotenv import load_dotenv
+import traceback
 
 load_dotenv()
 
@@ -17,6 +18,7 @@ app.add_middleware(
 )
 
 agent = build_agent()
+
 class AnalyzeRequest(BaseModel):
     repo_path: str
     commit1: str
@@ -34,17 +36,21 @@ def root():
 
 @app.post("/analyze", response_model=AnalyzeResponse)
 def analyze(request: AnalyzeRequest):
-    result = agent.invoke({
-        "repo_path": request.repo_path,
-        "commit1": request.commit1,
-        "commit2": request.commit2,
-        "diffs": [],
-        "explanations": [],
-        "final_report": ""
-    })
-    return AnalyzeResponse(
-        commit1=request.commit1,
-        commit2=request.commit2,
-        explanations=result["explanations"],
-        final_report=result["final_report"]
-    )
+    try:
+        result = agent.invoke({
+            "repo_path": request.repo_path,
+            "commit1": request.commit1,
+            "commit2": request.commit2,
+            "diffs": [],
+            "explanations": [],
+            "final_report": ""
+        })
+        return AnalyzeResponse(
+            commit1=request.commit1,
+            commit2=request.commit2,
+            explanations=result["explanations"],
+            final_report=result["final_report"]
+        )
+    except Exception as e:
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=str(e))

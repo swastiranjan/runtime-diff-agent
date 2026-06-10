@@ -63,8 +63,12 @@ function App() {
         </button>
       </div>
 
-      {error && <p style={{ color: "red" }}>{error}</p>}
-
+      {error && (
+        <div style={{ background: "#fff0f0", border: "1px solid #ffcccc", borderRadius: "8px", padding: "1rem" }}>
+          <p style={{ color: "#cc0000", fontWeight: "bold", marginBottom: "0.3rem" }}>Something went wrong</p>
+          <p style={{ color: "#aa0000", fontSize: "0.9rem" }}>{error}</p>
+        </div>
+      )}
       {result && (
         <div>
           <h2 style={{ fontSize: "1.2rem", marginBottom: "1rem" }}>File Explanations</h2>

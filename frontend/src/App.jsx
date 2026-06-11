@@ -37,7 +37,7 @@ function App() {
 
       <div style={{ display: "flex", flexDirection: "column", gap: "1rem", marginBottom: "1.5rem" }}>
         <input
-          placeholder="Repo path (e.g. .)"
+          placeholder="Repo path (e.g. .) or GitHub URL (e.g. https://github.com/user/repo)"
           value={repoPath}
           onChange={e => setRepoPath(e.target.value)}
           style={{ padding: "0.6rem", borderRadius: "6px", border: "1px solid #ccc", fontSize: "1rem" }}

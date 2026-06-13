@@ -1,17 +1,12 @@
 import chromadb
-from chromadb.utils import embedding_functions
 
 CHROMA_PATH = "./data/chroma_db"
 COLLECTION_NAME = "diff_explanations"
 
 def get_collection():
     client = chromadb.PersistentClient(path=CHROMA_PATH)
-    ef = embedding_functions.SentenceTransformerEmbeddingFunction(
-        model_name="all-MiniLM-L6-v2"
-    )
     collection = client.get_or_create_collection(
-        name=COLLECTION_NAME,
-        embedding_function=ef
+        name=COLLECTION_NAME
     )
     return collection
 

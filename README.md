@@ -3,19 +3,30 @@
 An agentic AI tool that takes two git commit hashes and generates plain-English explanations of how program behavior changed between commits.
 
 ## Architecture
-Two commit hashes
-↓
-Git Diff Extractor (GitPython)
-↓
-LangGraph Agent
-↓
-ChromaDB Cache → if hit: return cached explanation
-↓         if miss: call Gemini → store → return
-Gemini 2.5 Flash
-↓
-FastAPI Backend
-↓
-React Frontend
+
+```mermaid
+flowchart LR
+    A[Commit Hash 1]
+    B[Commit Hash 2]
+
+    A --> C[Git Diff Extractor<br/>GitPython]
+    B --> C
+
+    C --> D[LangGraph Agent]
+
+    D --> E{ChromaDB Cache}
+
+    E -->|Cache Hit| F[Return Cached Explanation]
+
+    E -->|Cache Miss| G[Gemini 2.5 Flash]
+    G --> H[Generate Explanation]
+    H --> I[Store in ChromaDB]
+    I --> J[Return Explanation]
+
+    J --> K[FastAPI Backend]
+    F --> K
+    K --> L[React Frontend]
+```
 
 ## Tech Stack
 
